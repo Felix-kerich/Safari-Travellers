@@ -1,0 +1,39 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Available Buses</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Bus Name</th>
+                <th>Arrival Time</th>
+                <th>Arrival Date</th>
+                <th>From</th>
+                <th>Destination</th>
+                <th>Amount</th>
+                <th>Time Until Arrival</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bus in all_buses %}
+            <tr>
+                <td>{{ bus.BusName }}</td>
+                <td>{{ bus.BusArrivalTime }}</td>
+                <td>{{ bus.BusArrivalDate }}</td>
+                <td>{{ bus.From }}</td>
+                <td>{{ bus.BusDestination }}</td>
+                <td>{{ bus.Amount }}</td>
+                <td>{{ bus.time_until_arrival }}</td>
+                <td><a href="{% url 'register' %}">Book Now</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

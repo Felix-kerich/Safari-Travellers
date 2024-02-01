@@ -1,0 +1,24 @@
+<!-- book_vehicle.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Vehicle</title>
+    <link rel="stylesheet" href="{% static 'styles/registration.css' %}">
+</head>
+<body>
+    <h1>Book Vehicle</h1>
+    <form action="{% url 'home' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="vehicle">Select Vehicle:</label>
+        <select id="vehicle" name="vehicle">
+            <option value="Bus1">Bus1</option>
+            <option value="Bus2">Bus2</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+        <input type="submit" value="Book">
+    </form>
+</body>
+</html>

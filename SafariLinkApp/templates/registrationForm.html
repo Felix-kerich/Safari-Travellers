@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Design by foolishdeveloper.com -->
+    <title>Signup Page</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link href="{% static 'styles/registration.css' %}" rel="stylesheet">
+    <!--Stylesheet-->
+  </head>
+<body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+ </div>
+
+    <form action="{% url 'register' %}" method="POST">
+         {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+  {% endif %}
+    {% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+    <label for="fname">Enter your First Name</label><br>
+    <input type="text" name="fname" id="fname"><br>
+    <label for="lname">Enter your Last Name</label><br>
+    <input type="text" name="lname" id="lname"><br>
+    <label for="email">Enter your Email</label><br>
+    <input type="email" name="email" id="email"><br>
+    <label for="password">Enter your password</label><br>
+    <input type="password" name="password" id="password"><br>
+                <button type="submit">Signup</button>
+
+        <a href="{% url 'login' %}" >i have already account</a>
+    </form>
+
+</body>
+</html>

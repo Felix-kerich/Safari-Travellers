@@ -1,0 +1,75 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table {
+            margin-top: 100px;
+            border: 1px solid blue;
+        }
+        td,th{
+            border: 1px solid blue;
+        }
+        .details{
+            margin-top: 50px;
+            height: 350px;
+            width: 300px;
+            background-color:dimgray ;
+            text-align: center;
+            border-radius: 20px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+</head>
+
+<body style="background-color: #79aec8">
+<header>
+    <nav class="navbar">
+        <a class="logo" href="#">SafiriLink Travellers<span>.</span></a>
+        <ul class="menu-links">
+            <span id="close-menu-btn" class="material-symbols-outlined">close</span>
+            <li><a href="{{ '/' }}">Home</a></li>
+            <li><a href="https://www.google.com/maps/place/DEDAN+KIMATHI+UNIVERSITY/@-0.3950126,36.9551816,15.28z/data=!4m10!1m2!2m1!1sdkut!3m6!1s0x1828677a4955ff13:0x7ae4dae9615396a6!8m2!3d-0.3978314!4d36.9609217!15sCgRka3V0WgYiBGRrdXSSAQp1bml2ZXJzaXR5mgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVVJDZG1adVREZEJSUkFC4AEA!16s%2Fm%2F04q3glb?entry=ttu" target="_blank">Location</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="{% url 'dashboard' %}">Vehicles available</a></li>
+            </ul>
+                <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
+    </nav>
+</header>
+<h1>home</h1>
+<table>
+<h1>{{ response_data  }}</h1>
+        <tr>
+        <th>Bus Name</th>
+        <th>Time Remaining</th>
+    </tr>
+    {% for bus in buses %}
+    <tr>
+        <td>{{ bus }}</td>
+        <td style="color: red">{{ bus.time_until_arrival }}</td>
+        <td><input type="checkbox"></td>
+    </tr>
+
+    {% endfor %}
+</table>
+<div class="details">
+    <h1>Details</h1>
+    <p><strong>First Name:</strong> {{ user.fname }}</p><br><br>
+    <p><strong>Last Name:</strong> {{ user.lname }}</p><br><br>
+    <p><strong>Email:</strong> {{ user.email }}</p><br><br>
+    <p><strong>Vehicle Selected:</strong> {{ vehicle }}</p><br><br>
+    <p><strong>Amount paid:</strong> {{ 0 }}</p><br><br>
+
+<button><a href="{% url 'book' %}">pay here</a></button>
+
+    </div>
+
+<script src="{% static 'javascript.js' %}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"> xmlns:th="http://tymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafiriLinks</title>
+   <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <a class="logo" href="#">SafiriLink Travellers<span>.</span></a>
+        <ul class="menu-links">
+            <span id="close-menu-btn" class="material-symbols-outlined">close</span>
+            <li><a href="#">Home</a></li>
+            <li><a href="https://www.google.com/maps/place/DEDAN+KIMATHI+UNIVERSITY/@-0.3950126,36.9551816,15.28z/data=!4m10!1m2!2m1!1sdkut!3m6!1s0x1828677a4955ff13:0x7ae4dae9615396a6!8m2!3d-0.3978314!4d36.9609217!15sCgRka3V0WgYiBGRrdXSSAQp1bml2ZXJzaXR5mgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVVJDZG1adVREZEJSUkFC4AEA!16s%2Fm%2F04q3glb?entry=ttu" target="_blank">Location</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="{{ 'admin/' }}">Admin</a></li>
+        </ul>
+                <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
+    </nav>
+</header>
+
+
+<section class="hero-section">
+
+    <div class="content">
+        <h2>Welcome to SafiriLinks Travellers!</h2>
+        <p>Embark on a journey of convenience and reliability with SafiriLinks Travellers, your go-to platform for stress-free matatu bookings.
+            Whether it's your daily commute or an exciting travel adventure, we've got you covered.</p>
+                <button><a href="{% url 'dashboard' %}">book now</a></button>
+    </div>
+    <div class="Register">
+        <div class="registerLink">
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+</section>
+<script src="{% static 'javascript.js' %}"></script>
+<div class="footers">
+<footer>
+    <p>SafiriLinks Travellers</p>
+    <p>&copy; 2023</p>
+</footer>
+</div>
+</body>
+</html>
