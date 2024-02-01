@@ -202,7 +202,7 @@ button{
         <div class="shape"></div>
     </div>
 
-    <form method="post">
+    <form method="post" action="{% url 'login' %}">
         <h3>Login Here</h3>
          {% if error_message %}
     <p style="color: red;">{{ error_message }}</p>

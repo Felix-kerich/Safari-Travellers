@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
      'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SafiriLink.urls'
@@ -133,5 +135,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'SafariLinkApp.Member'
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
+LOGIN_REDIRECT_URL = '/homeDashboard/'
+LOGIN_URL = 'login'
 
 
