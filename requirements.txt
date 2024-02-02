@@ -2,7 +2,7 @@ asgiref==3.7.2
 certifi==2023.11.17
 charset-normalizer==3.3.2
 daraja==0.0.4
-Django==5.0.1
+Django==4.1.5
 idna==3.6
 oauthlib==3.2.2
 requests==2.31.0
