@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from django.conf import settings
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,8 +27,7 @@ SECRET_KEY = 'django-insecure-xp-xl%i&w!ybbc*tvnsmr8svowctk1n)4hyh^ngjix2r6037xd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh"]
 
 
 # Application definition
@@ -120,17 +121,23 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'productionfiles'
-STATICFILES_DIRS = [BASE_DIR / "static"]
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'SafariLinkApp/static'),
-]
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+# Use this configuration for development
+if settings.DEBUG:
+    # Development settings
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'ui/static'),
+        os.path.join(BASE_DIR, 'SafariLinkApp/static'),
+    ]
+else:
+    # Production settings
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'ui/static'),
+        os.path.join(BASE_DIR, 'SafariLinkApp/static'),
+    ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'SafariLinkApp.Member'
@@ -140,3 +147,17 @@ LOGIN_REDIRECT_URL = '/homeDashboard/'
 LOGIN_URL = 'login'
 
 
+
+from dotenv import load_dotenv
+load_dotenv()
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("safarilink"),
+        "USER": os.environ.get("kerichfelix"),
+        "PASSWORD": os.environ.get("kerichfelix"),
+        "HOST": os.environ.get("localhost"),
+        "PORT": os.environ.get("5432"),
+    }
+}

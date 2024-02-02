@@ -1,4 +1,7 @@
+from django.template.context_processors import static
 from django.urls import path
+
+from SafiriLink import settings
 from . import views, admin
 from .views import index_view,dashboard_view,register_view,login_view,book_view, daraja_view,home_view,logout_view
 
@@ -14,3 +17,5 @@ urlpatterns = [
     path('daraja_view/', views.daraja_view, name='daraja'),
     path('logout/', logout_view, name='logout')
     ]
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
