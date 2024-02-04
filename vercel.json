@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "SafariLink/wsgi.py",
+      "src": "SafiriLink/wsgi.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb", "runtime": "python3" }
     },
@@ -21,7 +21,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "SafariLink/wsgi.py"
+      "dest": "SafiriLink/wsgi.py"
     }
   ],
   "outputDirectory": "ui/staticfiles"
