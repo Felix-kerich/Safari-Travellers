@@ -127,10 +127,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "ui/static")]
 STATIC_URL = "static/"
-# settings.py
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATIC_ROOT = os.path.join(BASE_DIR, "ui/staticfiles")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'SafariLinkApp.Member'
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
