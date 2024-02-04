@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-xp-xl%i&w!ybbc*tvnsmr8svowctk1n)4hyh^ngjix2r6037xd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh", "localhost"]
 
 
 # Application definition
@@ -151,13 +151,23 @@ LOGIN_URL = 'login'
 from dotenv import load_dotenv
 load_dotenv()
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": os.environ.get("safarilink"),
+#         "USER": os.environ.get("kerichfelix"),
+#         "PASSWORD": os.environ.get("kerichfelix"),
+#         "HOST": os.environ.get("localhost"),
+#         "PORT": os.environ.get("5432"),
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("safarilink"),
-        "USER": os.environ.get("kerichfelix"),
-        "PASSWORD": os.environ.get("kerichfelix"),
-        "HOST": os.environ.get("localhost"),
-        "PORT": os.environ.get("5432"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'safarilink',
+        'USER': 'kerichfelix',
+        'PASSWORD': 'kerichfelix',
+        'HOST': 'localhost',  # Set to the appropriate host if not running locally
+        'PORT': '5432',      # Default PostgreSQL port
     }
 }
