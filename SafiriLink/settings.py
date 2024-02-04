@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-import dotenv
 from decouple import config
 from django.conf import settings
 
@@ -153,16 +152,7 @@ LOGIN_URL = 'login'
 from dotenv import load_dotenv
 load_dotenv()
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": os.environ.get("safarilink"),
-#         "USER": os.environ.get("kerichfelix"),
-#         "PASSWORD": os.environ.get("kerichfelix"),
-#         "HOST": os.environ.get("localhost"),
-#         "PORT": os.environ.get("5432"),
-#     }
-# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -174,6 +164,13 @@ DATABASES = {
     }
 }
 
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'safarilink',
+        'USER': 'kerichfelix',
+        'PASSWORD': 'kerichfelix',
+        'HOST': 'localhost',  # Set to the appropriate host if not running locally
+        'PORT': '5432',      # Default PostgreSQL port
+    }
+}
