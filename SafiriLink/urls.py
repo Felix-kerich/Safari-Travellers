@@ -15,16 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
-
-from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static  # Import static from django.conf.urls
 
 urlpatterns = [
-    path('', include('SafariLinkApp.urls')),
     path('admin/', admin.site.urls),
+    path('', include('SafariLinkApp.urls')),
 ]
+
+# Use the static function without the document_root argument
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

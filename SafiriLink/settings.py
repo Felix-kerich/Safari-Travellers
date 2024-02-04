@@ -123,27 +123,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 # Use this configuration for development
-if settings.DEBUG:
-    # Development settings
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'ui/static'),
-        os.path.join(BASE_DIR, 'SafariLinkApp/static'),
-    ]
-else:
-    # Production settings
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'ui/static'),
-        os.path.join(BASE_DIR, 'SafariLinkApp/static'),
-    ]
 
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "ui/static")]
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "ui/staticfiles")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'SafariLinkApp.Member'
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
+
+
 LOGIN_REDIRECT_URL = '/homeDashboard/'
 LOGIN_URL = 'login'
 
