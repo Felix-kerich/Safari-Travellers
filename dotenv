@@ -1,7 +1,7 @@
 DEBUG=True
 SECRET_KEY='django-insecure-xp-xl%i&w!ybbc*tvnsmr8svowctk1n)4hyh^ngjix2r6037xd'
-DB_NAME=safarilink
-DB_USER=kerichfelix
-DB_PASSWORD=kerichfelix
-DB_HOST=localhost
+DB_NAME=postgres
+DB_USER=postgres.ynswruhnovfdbrymvwze
+DB_PASSWORD=kerichfelix321
+DB_HOST=aws-0-eu-central-1.pooler.supabase.com
 DB_PORT=5432
