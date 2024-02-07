@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> xmlns:th="http://tymeleaf.org">
+
 <head>
     <style>
         table {
@@ -10,18 +11,18 @@
         td,th{
             border: 1px solid blue;
         }
-        .details{
+        .details {
             margin-top: 50px;
-            height: 350px;
+            height: 500px;
             width: 300px;
-            background-color: dimgray ;
+            background-color: dimgray;
             text-align: center;
             border-radius: 20px;
         }
     </style>
     <meta charset="UTF-8">
-    <title>home</title>
-    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <title>Receipt Details</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
 </head>
 
 <body style="background-color: #79aec8">
@@ -45,26 +46,25 @@
     </nav>
 </header>
 <table>
-    <h1>{{ response_data  }}</h1>
+    <h1>{{ response_data }}</h1>
     <tr>
-        <th>Bus Name</th>
+        <th>Bus Number Plate</th>
         <th>Time Remaining</th>
         <th>Amount</th>
+        <th>Number Of Seats</th>
     </tr>
     {% for bus in buses %}
         <tr>
             <td id="busName_{{ bus.id }}">{{ bus.BusName }}</td>
             <td style="color: red">{{ bus.time_until_arrival }}</td>
             <td>{{ bus.Amount }}</td>
-            <td>
-                <input type="checkbox" id="{{ bus.id }}" onchange="updateVehicleSelection(this)">
-            </td>
+            <td>{{ bus.NuberOfSeats }}</td>
         </tr>
     {% endfor %}
 </table>
 <br><br>
 <hr>
-{% for message in messages %}
+ {% for message in messages %}
     <p>{{ message }}</p>
 {% endfor %}
 <div class="details">
@@ -75,38 +75,55 @@
         <p><strong>First Name:</strong> {{ user.fname }}</p><br><br>
         <p><strong>Last Name:</strong> {{ user.lname }}</p><br><br>
         <p><strong>Email:</strong> {{ user.email }}</p><br><br>
-        <p><strong>Vehicle Selected:</strong> <span id="selectedVehicle">{{ vehicle }}</span></p><br><br>
-        <p><strong>Amount paid:</strong> {{ 0 }}</p><br><br>
+        <p><strong>Vehicle Number Plate:</strong> {{ user.vehicle }}</p><br><br>
+        <p><strong>Amount paid:</strong> {{ user.amount_paid }}</p><br><br>
+        <p><strong>Payment Confirmation:</strong> {{ user.is_paid }}</p><br><br>
+        <p><strong>Seat Number:</strong> {{ user.seatNumber }}</p><br><br>
+        <p><button onclick="downloadReceipt()">Download Receipt</button></p>
+
 
         <button style="width: 100px; height: 50px; border-radius: 20px; background-color: olivedrab">
-            <a href="{% url 'book' %}">Pay Here</a>
-        </button>
+
+           <a href="{% url 'book' %}">Pay here</a>
+
+              </button>
     {% else %}
         <p>Please <a href="{% url 'login' %}">login</a> to view details.</p>
     {% endif %}
 </div>
-
 <script>
     const header = document.querySelector("header");
-      const hamburgerBtn = document.querySelector("#hamburger-btn");
-      const closeMenuBtn = document.querySelector("#close-menu-btn");
+    const hamburgerBtn = document.querySelector("#hamburger-btn");
+    const closeMenuBtn = document.querySelector("#close-menu-btn");
 
-      // Toggle mobile menu on hamburger button click
-      hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
+    // Toggle mobile menu on hamburger button click
+    hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
 
-      // Close mobile menu on close button click
-      closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
+    // Close mobile menu on close button click
+    closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
+</script>
+<script>
 
-    function updateVehicleSelection(checkbox) {
-        var selectedVehicle = document.getElementById('selectedVehicle');
-        if (checkbox.checked) {
-            var busName = document.getElementById('busName_' + checkbox.id).innerText;
-            selectedVehicle.innerText = busName;  // Display the bus name
-        } else {
-            selectedVehicle.innerText = '';
-        }
+    function downloadReceipt() {
+        // Gather the receipt details
+        var receiptDetails = "Username: {{ user.username }}\n"
+            + "First Name: {{ user.fname }}\n"
+            + "Last Name: {{ user.lname }}\n"
+            + "Email: {{ user.email }}\n"
+            + "Vehicle Number Plate: {{ user.vehicle }}\n"
+            + "Amount paid: {{ user.amount_paid }}\n"
+            + "Payment Confirmation: {{ user.is_paid }}\n"
+            + "Seat Number: {{ user.seatNumber }}\n";
+
+        // Create a Blob containing the details
+        var blob = new Blob([receiptDetails], { type: "text/plain" });
+
+        // Create a link element to trigger the download
+        var link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "receipt_details.txt";
+        link.click();
     }
 </script>
-{#<script src="{% static 'javascript.js' %}"></script>#}
 </body>
 </html>

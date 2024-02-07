@@ -5,7 +5,7 @@ from .models import Member
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['username', 'fname', 'lname', 'email', 'password']
+        fields = ['username', 'fname', 'lname', 'email', 'password', 'amount_paid','seatNumber','vehicle']
 
 class LoginForm(forms.Form):
     username = forms.CharField()

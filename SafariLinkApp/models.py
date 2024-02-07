@@ -18,9 +18,13 @@ class MemberManager(BaseUserManager):
 class Member(AbstractBaseUser, PermissionsMixin):
     fname = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True, null=True)
+    amount_paid = models.CharField(max_length=100,null=True, blank=True)
     lname = models.CharField(max_length=100)
     email = models.EmailField()
     password = models.CharField(max_length=50)
+    seatNumber = models.CharField(max_length=100,null=True, blank=True)
+    vehicle = models.CharField(max_length=100,null=True, blank=True)
+    is_paid =  models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -54,6 +58,7 @@ class BusesAvailable(models.Model):
     BusArrivalTime = models.DateTimeField()
     BusArrivalDate = models.DateTimeField()
     Amount = models.CharField(max_length=100, null=True, blank=True)
+    NuberOfSeats = models.CharField(max_length=100, null=True, blank=True)
 
     def time_until_arrival(self):
         current_time = timezone.now()

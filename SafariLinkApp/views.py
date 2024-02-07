@@ -2,10 +2,13 @@ from datetime import datetime, timezone
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Max
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+
 from .forms import MemberForm, LoginForm
 from SafariLinkApp.models import BusesAvailable, Member
 from .daraja import mpesa_payment
@@ -65,27 +68,45 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
-def book_view(request):
-           return render(request,'bookingForm.html')
-def daraja_view(request):
-    buses = BusesAvailable.objects.all()
-    user = request.user  # Retrieve the currently logged-in user
-    selected_vehicle = request.session.get('selected_vehicle')
 
+def book_view(request):
+       return render(request,'bookingForm.html')
+
+
+@csrf_exempt  # Add csrf_exempt decorator to your view
+def daraja_view(request):
     if request.method == 'POST':
         # Retrieve form data
         username = request.POST.get('username')
-        email = request.POST.get('email')
-        amount = request.POST.get('amount')
+        vehicle = request.POST.get('vehicle')
+        amount = request.POST.get('amount_paid')
         phone_number = request.POST.get('phoneNo')
 
+        # Assuming mpesa_payment returns a dictionary with a 'success' key indicating success or failure
         response = mpesa_payment(amount, phone_number)
-        return JsonResponse(response)
 
-    return render(request, 'daraja.html', {'buses': buses, 'user': user, 'vehicle': selected_vehicle})
+        if response.get('ResponseCode') == '0':
+            # Update user's amount_paid field
+            user = Member.objects.get(username=username)
+            user.vehicle = vehicle
+            user.amount_paid = amount
+            user.save()
 
+            # Redirect to booking receipt page
+            return redirect('home')
+        else:
+            return JsonResponse(response)
+
+    return render(request, 'daraja.html')
+
+
+
+@login_required  # Add login_required decorator to ensure only logged-in users can access this view
 def home_view(request):
-     return render(request, 'home.html')
+    # Retrieve the currently logged-in user
+    user = request.user
+
+    return render(request, 'home.html', {'user': user})
 def book_vehicle(request):
     if request.method == 'POST':
         form = MemberForm(request.POST)
@@ -97,15 +118,9 @@ def book_vehicle(request):
     return render(request, 'book_vehicle.html', {'form': form})
 
 def booking_receipt(request):
-    if request.method == 'POST':
+    user = request.user
 
-        pass
-    else:
-
-        user = Member.objects.latest('id')
-        selected_vehicle = request.POST.get('vehicle', 'Not Selected')
-        return render(request, 'home.html', {'user': user, 'vehicle': selected_vehicle})
-
+    return render(request, 'home.html', {'user': user})
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))

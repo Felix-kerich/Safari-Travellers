@@ -1,24 +1,56 @@
-<!-- book_vehicle.html -->
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Vehicle</title>
-    <link rel="stylesheet" href="{% static 'styles/registration.css' %}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seat Booking</title>
+    <style>
+        .seat {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 40px;
+        }
+        .booked {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-    <h1>Book Vehicle</h1>
-    <form action="{% url 'home' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <label for="vehicle">Select Vehicle:</label>
-        <select id="vehicle" name="vehicle">
-            <option value="Bus1">Bus1</option>
-            <option value="Bus2">Bus2</option>
-            <!-- Add more options as needed -->
-        </select><br><br>
-        <input type="submit" value="Book">
-    </form>
+    <h1>Seat Booking</h1>
+    <p>Select a seat to book:</p>
+    <div id="seats">
+        <!-- Seats will be dynamically generated here -->
+        {% for seat in available_seats %}
+            <div class="seat" onclick="bookSeat({{ seat }})">{{ seat }}</div>
+        {% endfor %}
+    </div>
+    <script>
+        // Function to book a seat
+        function bookSeat(seatNumber) {
+            // AJAX request to book the seat
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    if (response.success) {
+                        alert("Seat booked successfully!");
+                        location.reload(); // Refresh the page
+                    } else {
+                        alert("Failed to book the seat: " + response.message);
+                    }
+                }
+            };
+            xhttp.open("POST", "/book_seat", true); // Assuming the booking URL is /book_seat
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("selected_seat=" + seatNumber);
+        }
+    </script>
 </body>
 </html>

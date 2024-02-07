@@ -10,13 +10,14 @@
     <table border="1">
         <thead>
             <tr>
-                <th>Bus Name</th>
+                <th>Bus Number Plate</th>
                 <th>Arrival Time</th>
                 <th>Arrival Date</th>
                 <th>From</th>
                 <th>Destination</th>
                 <th>Amount</th>
                 <th>Time Until Arrival</th>
+                <th>Number Of Seats</th>
                 <th>Book</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                 <td>{{ bus.BusDestination }}</td>
                 <td>{{ bus.Amount }}</td>
                 <td>{{ bus.time_until_arrival }}</td>
+                <td>{{ bus.NuberOfSeats }}</td>
                 <td><a href="{% url 'login' %}">Book Now</a></td>
             </tr>
             {% endfor %}
