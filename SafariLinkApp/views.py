@@ -70,8 +70,8 @@ def login_view(request):
 
 
 def book_view(request):
-       return render(request,'bookingForm.html')
-
+        all_buses = BusesAvailable.objects.all()
+        return render(request, 'bookingForm.html', {'all_buses': all_buses})
 
 @csrf_exempt  # Add csrf_exempt decorator to your view
 def daraja_view(request):
