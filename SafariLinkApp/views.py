@@ -51,11 +51,10 @@ def login_view(request):
                 buses = BusesAvailable.objects.all()
                 # user =Member.objects.latest('username')
                 user = request.user  # Retrieve the currently logged-in user
-                selected_vehicle = request.session.get('selected_vehicle')  # Assuming you stored the selected vehicle in session
                 print("User:", user)
                 print(f"Successfully logged in as {username}")  # Add debug print
                 messages.success(request, f"Successfully logged in as {username}")
-                return render(request, 'home.html', {'buses': buses, 'user': user, 'vehicle': selected_vehicle})
+                return render(request, 'home.html', {'buses': buses, 'user': user})
                 # return HttpResponseRedirect(reverse('home'))
             else:
                 print("Invalid username or password")

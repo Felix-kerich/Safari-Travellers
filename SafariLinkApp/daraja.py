@@ -45,7 +45,7 @@ def mpesa_payment(amount, phone_number):
         "PartyA": international_phone_number,
         "PartyB": shortcode,
         "PhoneNumber": international_phone_number,
-        "CallBackURL": "https://mydomain.com/path",
+        "CallBackURL": "https://bcfa-102-215-32-244.ngrok-free.app",
         "AccountReference": "SafariLink Travellers",
         "TransactionDesc": "Payment of X"
     }

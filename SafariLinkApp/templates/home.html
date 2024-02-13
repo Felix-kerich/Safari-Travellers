@@ -1,11 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en"> xmlns:th="http://tymeleaf.org">
+<html>
 
 <head>
     <style>
         table {
             margin-top: 100px;
+            width: 500px;
+            background-color: #006b1b;
             border: 1px solid blue;
         }
         td,th{
@@ -18,6 +20,20 @@
             background-color: dimgray;
             text-align: center;
             border-radius: 20px;
+        }
+        .pay{
+            margin-left: 800px;
+            margin-top: 100px;
+
+        }
+        .countdown{
+            margin-left: 800px;
+            margin-top: -200px;
+
+        }
+        .map{
+            margin-left: 700px;
+            margin-top: -500px;
         }
     </style>
     <meta charset="UTF-8">
@@ -63,6 +79,14 @@
     {% endfor %}
 </table>
 <br><br>
+<div class="countdown">
+    <h1>Countdown: </h1>
+</div>
+ <button class="pay" style="width: 100px; height: 50px; border-radius: 20px; background-color: olivedrab">
+
+           <a href="{% url 'book' %}">Pay here</a>
+
+              </button>
 <hr>
  {% for message in messages %}
     <p>{{ message }}</p>
@@ -82,15 +106,31 @@
         <p><button onclick="downloadReceipt()">Download Receipt</button></p>
 
 
-        <button style="width: 100px; height: 50px; border-radius: 20px; background-color: olivedrab">
 
-           <a href="{% url 'book' %}">Pay here</a>
-
-              </button>
     {% else %}
         <p>Please <a href="{% url 'login' %}">login</a> to view details.</p>
     {% endif %}
 </div>
+<div class="map" style="text-align: center">
+    {% for bus in buses %}
+        <div style="text-align: center "> {{ bus.BusName }}</div><br>
+        {% if user.is_authenticated and bus.From == "nyeri" and bus.BusDestination == "nakuru" %}
+<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510693.72541921475!2d36.1850975281372!3d-0.19702888878939484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18285dfed09e0ebf%3A0x829716f702f65e9e!2sNyeri!3m2!1d-0.43709899999999996!2d36.9580104!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!5e0!3m2!1sen!2ske!4v1707755251002!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nairobi" and bus.BusDestination == "nyeri" %}
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510638.93081310013!2d36.71615398620053!3d-0.8621392319641961!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!4m5!1s0x18285dfed09e0ebf%3A0x829716f702f65e9e!2sNyeri!3m2!1d-0.43709899999999996!2d36.9580104!5e0!3m2!1sen!2ske!4v1707755293153!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nakuru" and bus.BusDestination == "nairobi"  %}
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510648.53636852757!2d36.11850508478701!3d-0.7872667707445211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!5e0!3m2!1sen!2ske!4v1707811222816!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nakuru" and bus.BusDestination == "kisumu"  %}
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510694.477130987!2d35.08918452802659!3d-0.17075192371863102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!4m5!1s0x182aa437ad4ac81d%3A0x2012a439d6248dd2!2sKisumu!3m2!1d-0.0917016!2d34.7679568!5e0!3m2!1sen!2ske!4v1707814312703!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+
+    {% endfor %}
+</div>
+<script src="{% static 'javascript.js' %}"></script>
 <script>
     const header = document.querySelector("header");
     const hamburgerBtn = document.querySelector("#hamburger-btn");
