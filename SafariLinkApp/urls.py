@@ -17,7 +17,9 @@ urlpatterns = [
     path('daraja_view/',daraja_view, name='daraja'),
     path('logout/', logout_view, name='logout'),
     path('book_view/', views.book_view, name='book'),
-    path('booking_receipt/', views.booking_receipt, name='receipt')
+    path('booking_receipt/', views.booking_receipt, name='receipt'),
+    path('contact/', views.contact_view, name='contact'),
+    path('notifications/', views.notifications_view, name='notifications')
     ]
 # if settings.DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

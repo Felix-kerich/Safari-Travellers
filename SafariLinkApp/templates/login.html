@@ -206,6 +206,9 @@ button{
         <h3>Login Here</h3>
          {% if error_message %}
     <p style="color: red;">{{ error_message }}</p>
+             {% elif success_message %}
+             <p style="color: blue;">{{ success_message }}</p>
+
   {% endif %}
         {% csrf_token %}
         <label for="username">Username</label>

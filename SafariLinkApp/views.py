@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import MemberForm, LoginForm
-from SafariLinkApp.models import BusesAvailable, Member
+from SafariLinkApp.models import BusesAvailable, Member, Notifications
 from .daraja import mpesa_payment
 from django.contrib.auth.decorators import login_required
 
@@ -28,7 +28,9 @@ def register_view(request):
         if form.is_valid():
             member = form.save(commit=False)
             member.save()
-            return HttpResponseRedirect(reverse('login'))
+            messages.success(request,'Registered Successfully you can now login')
+            return render(request, 'login.html', {'form': form, 'success_message': 'Registered Successfully you can now login'})
+            # return HttpResponseRedirect(reverse('login'))
         else:
             print(form.errors)
             messages.error(request, "username taken. Please")
@@ -100,7 +102,7 @@ def daraja_view(request):
 
 
 
-@login_required  # Add login_required decorator to ensure only logged-in users can access this view
+# @login_required  # Add login_required decorator to ensure only logged-in users can access this view
 def home_view(request):
     # Retrieve the currently logged-in user
     user = request.user
@@ -123,3 +125,8 @@ def booking_receipt(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+def contact_view(request):
+    return render(request, 'contact.html')
+def notifications_view(request):
+    notifications = Notifications.objects.all()
+    return render(request, 'notifications.html', {'notifications' : notifications} )

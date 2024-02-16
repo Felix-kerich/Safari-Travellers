@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+</head>
+<body>
+<h1>Notifications</h1>
+<table border="1">
+    <tr>
+        <th>Vehicle Numberplate </th>
+        <th>From</th>
+        <th>Bus Destination</th>
+        <th>Message</th>
+    </tr>
+    <tr>
+        {% for notification in notifications %}
+        <td>{{ notification.BusName }}</td>
+            <td>{{ notification.From }}</td>
+            <td>{{ notification.BusDestination }}</td>
+            <td>{{ notification.message }}</td>
+        {% endfor %}
+    </tr>
+</table>
+</body>
+</html>

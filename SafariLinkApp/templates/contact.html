@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Contact</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/contact.css' %}">
+</head>
+
+<body>
+    <section class="contact">
+        <div class="u-center-text u-margin-bottom-big">
+            <h2 class="heading-secondary" style="text-align: center">
+                CONTACT ADMIN
+            </h2>
+        </div>
+        <form id="contactForm">
+            <label for="name">Enter your Username </label>
+            <input name="name" type="text" class="feedback-input" placeholder="Name" />
+            <label for="email">Enter your Email </label>
+            <input name="email" type="text" class="feedback-input" placeholder="Email" />
+            <textarea name="text" class="feedback-input" placeholder="Your Message"></textarea>
+            <button type="submit">Send</button>
+        </form>
+
+        <!-- Add the EmailJS SDK to your webpage -->
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize the EmailJS SDK with your user ID
+                emailjs.init('xZ33d1QvSmtHidd3G');
+
+                // Add an event listener to the form's submit button
+                document.getElementById("contactForm").addEventListener("submit", function (event) {
+                    event.preventDefault(); // Prevent the default form submit behavior
+
+                    // Send the email using EmailJS
+                    emailjs.send("service_w1zmfwm", "template_v0bjjrv", {
+                        "from_name": document.querySelector("input[name='name']").value,
+                        "from_email": document.querySelector("input[name='email']").value,
+                        "message": document.querySelector("textarea[name='text']").value
+                    })
+                        .then(function (response) {
+                            console.log("SUCCESS", response);
+                            alert("Your message has been sent successfully!");
+                        })
+                        .catch(function (error) {
+                            console.log("FAILED", error);
+                            alert("Sorry, there was an error sending your message.");
+                        });
+                });
+            });
+        </script>
+    </section>
+</body>
+
+</html>

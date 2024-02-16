@@ -67,3 +67,9 @@ class BusesAvailable(models.Model):
     def __str__(self):
         return self.BusName
 
+class Notifications(models.Model):
+    BusName = models.CharField(max_length=100)
+    From = models.CharField(max_length=100, null=True, blank=True)
+    BusDestination = models.CharField(max_length=100,null=True)
+    message = models.CharField(max_length=100, null=True, blank=True)
+

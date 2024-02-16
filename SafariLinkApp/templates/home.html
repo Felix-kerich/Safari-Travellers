@@ -44,13 +44,12 @@
 <body style="background-color: #79aec8">
 <header>
     <nav class="navbar">
-        <a class="logo" href="#">SafiriLink Travellers<span>.</span></a>
-        <ul class="menu-links">
+            <ul class="menu-links">
             <span id="close-menu-btn" class="material-symbols-outlined">close</span>
             <li><a href="{{ '/' }}">Home</a></li>
             <li><a href="#">Location</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Contact us</a></li>
+            <li><a href="{% url 'notifications' %}">Notifications</a></li>
+            <li><a href="{% url 'contact' %}">Contact us</a></li>
             <li><a href="{% url 'dashboard' %}">Vehicles available</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a></li>
@@ -91,6 +90,7 @@
  {% for message in messages %}
     <p>{{ message }}</p>
 {% endfor %}
+<h1>SAFE JOURNEY</h1>
 <div class="details">
     <h1>Details</h1>
 
