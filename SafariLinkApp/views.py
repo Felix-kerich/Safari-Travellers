@@ -102,7 +102,7 @@ def daraja_view(request):
 
 
 
-# @login_required  # Add login_required decorator to ensure only logged-in users can access this view
+@login_required  # Add login_required decorator to ensure only logged-in users can access this view
 def home_view(request):
     # Retrieve the currently logged-in user
     user = request.user
@@ -130,3 +130,5 @@ def contact_view(request):
 def notifications_view(request):
     notifications = Notifications.objects.all()
     return render(request, 'notifications.html', {'notifications' : notifications} )
+def e_citizen_view(request):
+    return render(request,'e-citizen.html')

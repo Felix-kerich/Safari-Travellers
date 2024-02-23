@@ -19,7 +19,8 @@ urlpatterns = [
     path('book_view/', views.book_view, name='book'),
     path('booking_receipt/', views.booking_receipt, name='receipt'),
     path('contact/', views.contact_view, name='contact'),
-    path('notifications/', views.notifications_view, name='notifications')
+    path('notifications/', views.notifications_view, name='notifications'),
+    path('e-citizen/', views.e_citizen_view, name='e_citizen')
     ]
 # if settings.DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

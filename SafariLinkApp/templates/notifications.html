@@ -7,6 +7,7 @@
 <body>
 <h1>Notifications</h1>
 <table border="1">
+
     <tr>
         <th>Vehicle Numberplate </th>
         <th>From</th>
@@ -15,6 +16,9 @@
     </tr>
     <tr>
         {% for notification in notifications %}
+              <p style="color: blue;font-style: italic">General Notification:</p>
+                 {{ notification.generalNotification }}
+             <p style="color: blue;font-style: italic">Other Notification:</p>
         <td>{{ notification.BusName }}</td>
             <td>{{ notification.From }}</td>
             <td>{{ notification.BusDestination }}</td>
@@ -22,5 +26,6 @@
         {% endfor %}
     </tr>
 </table>
+<a href="{% url 'index' %}">back home</a>
 </body>
 </html>

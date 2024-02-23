@@ -72,4 +72,5 @@ class Notifications(models.Model):
     From = models.CharField(max_length=100, null=True, blank=True)
     BusDestination = models.CharField(max_length=100,null=True)
     message = models.CharField(max_length=100, null=True, blank=True)
+    generalNotification = models.CharField(max_length=100, null=True, blank=True)
 
