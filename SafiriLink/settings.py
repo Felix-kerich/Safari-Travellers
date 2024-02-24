@@ -133,6 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
 # AUTHENTICATION_BACKENDS = ['SafariLinkApp.backends.MemberAuthBackend']
 
+CSRF_TRUSTED_ORIGINS = ['https://389e-102-215-32-244.ngrok-free.app']
 
 LOGIN_REDIRECT_URL = '/homeDashboard/'
 LOGIN_URL = 'login'

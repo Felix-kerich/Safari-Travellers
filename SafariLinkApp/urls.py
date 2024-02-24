@@ -3,7 +3,7 @@ from django.urls import path
 
 from SafiriLink import settings
 from . import views, admin
-from .views import index_view,dashboard_view,register_view,login_view,book_view, daraja_view,home_view,logout_view
+from .views import index_view,dashboard_view,register_view,login_view,book_view, daraja_view,home_view,logout_view,callback_view
 
 urlpatterns = [
     path('SafariLinkApp/', views.SafariLinkApp, name='SafariLinkApp'),
@@ -20,7 +20,8 @@ urlpatterns = [
     path('booking_receipt/', views.booking_receipt, name='receipt'),
     path('contact/', views.contact_view, name='contact'),
     path('notifications/', views.notifications_view, name='notifications'),
-    path('e-citizen/', views.e_citizen_view, name='e_citizen')
+    path('e-citizen/', views.e_citizen_view, name='e_citizen'),
+    path('callback/', callback_view, name='callback')
     ]
 # if settings.DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

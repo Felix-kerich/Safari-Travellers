@@ -1,5 +1,7 @@
+import json
 from datetime import datetime, timezone
 
+import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Max
@@ -10,7 +12,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import MemberForm, LoginForm
-from SafariLinkApp.models import BusesAvailable, Member, Notifications
+from SafariLinkApp.models import BusesAvailable, Member, Notifications, MpesaTransaction
 from .daraja import mpesa_payment
 from django.contrib.auth.decorators import login_required
 
@@ -93,8 +95,9 @@ def daraja_view(request):
             user.amount_paid = amount
             user.save()
 
+            return JsonResponse(response)
             # Redirect to booking receipt page
-            return redirect('home')
+            # return redirect('callback')
         else:
             return JsonResponse(response)
 
@@ -132,3 +135,45 @@ def notifications_view(request):
     return render(request, 'notifications.html', {'notifications' : notifications} )
 def e_citizen_view(request):
     return render(request,'e-citizen.html')
+
+@csrf_exempt
+def callback_view(request):
+    if request.method == 'POST':  # Change to POST method
+        # Get the raw request body
+        stk_callback_response = request.body.decode('utf-8')
+
+        # Log the response to a file (optional)
+        log_file = "Mpesastkresponse.json"
+        with open(log_file, "a") as log:
+            log.write(stk_callback_response)
+
+        # Parse the JSON data
+        data = json.loads(stk_callback_response)
+
+        # Extract relevant information
+        merchant_request_id = data.get('Body', {}).get('stkCallback', {}).get('MerchantRequestID')
+        checkout_request_id = data.get('Body', {}).get('stkCallback', {}).get('CheckoutRequestID')
+        result_code = data.get('Body', {}).get('stkCallback', {}).get('ResultCode')
+        amount = float(
+            data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[0].get('Value'))
+        transaction_id = data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[1].get(
+            'Value')
+        user_phone_number = data.get('Body', {}).get('stkCallback', {}).get('CallbackMetadata', {}).get('Item', [])[
+            4].get('Value')
+
+        # Check if the transaction was successful
+        if result_code == 0:  # Change to integer comparison
+            # Store the transaction details in the database
+            MpesaTransaction.objects.create(
+                MerchantRequestID=merchant_request_id,
+                CheckoutRequestID=checkout_request_id,
+                ResultCode=result_code,
+                Amount=amount,
+                MpesaReceiptNumber=transaction_id,
+                PhoneNumber=user_phone_number
+
+            )
+
+            return JsonResponse({'message': 'Transaction successful'})
+
+    return JsonResponse({'error': 'Method not allowed'})
