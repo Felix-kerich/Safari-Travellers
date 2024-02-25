@@ -29,7 +29,7 @@
         }
         .countdown{
             margin-left: 600px;
-            margin-top: -230px;
+            margin-top: -100px;
 
 
         }
@@ -55,7 +55,11 @@
             <span id="close-menu-btn" class="material-symbols-outlined">close</span>
             <li><a href="{{ '/' }}">Home</a></li>
             <li><a href="#">Location</a></li>
-            <li><a href="{% url 'notifications' %}">Notifications</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'notifications' %}">Notifications</a></li>
+            {% else %}
+               <li><a href="{% url 'login' %}">Notification</a></li>
+            {% endif %}
             <li><a href="{% url 'contact' %}">Contact us</a></li>
             <li><a href="{% url 'dashboard' %}">Vehicles available</a></li>
             {% if user.is_authenticated %}
@@ -107,7 +111,7 @@
     <p>{{ message }}</p>
 {% endfor %}
 <h1>SAFE JOURNEY</h1>
-<div class="details">
+<div class="details" id="receiptContent">
     <h1>Details</h1>
 
     {% if user.is_authenticated %}
@@ -119,7 +123,8 @@
         <p><strong>Amount paid:</strong> {{ user.amount_paid }}</p><br><br>
         <p><strong>Payment Confirmation:</strong> {{ user.is_paid }}</p><br><br>
         <p><strong>Seat Number:</strong> {{ user.seatNumber }}</p><br><br>
-        <p><button onclick="downloadReceipt()">Download Receipt</button></p>
+        <p><strong>Time:</strong> <span id="currentDateTime"></span></p><br><br>
+        <button onclick="downloadReceipt()">Download Receipt </button>
 
 
 
@@ -148,6 +153,39 @@
 
     {% endfor %}
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+
+<script>
+    // Get the current date and time
+    var now = new Date();
+    var currentDateTime = now.toLocaleString();
+
+    // Display the current date and time
+    document.getElementById("currentDateTime").innerText = currentDateTime;
+
+    function downloadReceipt() {
+      const receiptContainer = document.getElementById("receiptContent");
+
+      // Log fetched content for debugging (uncomment if needed)
+      // console.log("Fetched content:", receiptContainer.innerHTML);
+
+      html2pdf(receiptContainer, {
+        margin: 10,
+        filename: 'receipt.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      })
+      .then(response => {
+        console.log("PDF generation successful!");
+      })
+      .catch(error => {
+        console.error("Error generating PDF:", error);
+        // Handle errors appropriately (e.g., display error message)
+      });
+    }
+  </script>
 <script src="{% static 'javascript.js' %}"></script>
 <script>
     const header = document.querySelector("header");
@@ -160,28 +198,6 @@
     // Close mobile menu on close button click
     closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
 </script>
-<script>
 
-    function downloadReceipt() {
-        // Gather the receipt details
-        var receiptDetails = "Username: {{ user.username }}\n"
-            + "First Name: {{ user.fname }}\n"
-            + "Last Name: {{ user.lname }}\n"
-            + "Email: {{ user.email }}\n"
-            + "Vehicle Number Plate: {{ user.vehicle }}\n"
-            + "Amount paid: {{ user.amount_paid }}\n"
-            + "Payment Confirmation: {{ user.is_paid }}\n"
-            + "Seat Number: {{ user.seatNumber }}\n";
-
-        // Create a Blob containing the details
-        var blob = new Blob([receiptDetails], { type: "text/plain" });
-
-        // Create a link element to trigger the download
-        var link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "receipt_details.txt";
-        link.click();
-    }
-</script>
 </body>
 </html>

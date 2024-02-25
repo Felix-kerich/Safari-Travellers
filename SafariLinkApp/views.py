@@ -1,22 +1,17 @@
 import json
-from datetime import datetime, timezone
-
-import requests
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.db.models import Max
+from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import MemberForm, LoginForm
 from SafariLinkApp.models import BusesAvailable, Member, Notifications, MpesaTransaction
 from .daraja import mpesa_payment
-from django.contrib.auth.decorators import login_required
 
-def SafariLinkApp(request):
+def safariLinkApp(request):
   template = loader.get_template('index.html')
   return HttpResponse(template.render())
 def index_view(request):
@@ -40,6 +35,7 @@ def register_view(request):
     else:
         form = MemberForm()
         return render(request, 'registrationForm.html', {'form': form})
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -72,11 +68,17 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
+# @login_required  # Add login_required decorator to ensure only logged-in users can access this view
+def home_view(request):
+    # Retrieve the currently logged-in user
+    user = request.user
+
+    return render(request, 'home.html', {'user': user})
 def book_view(request):
         all_buses = BusesAvailable.objects.all()
         return render(request, 'bookingForm.html', {'all_buses': all_buses})
 
-@csrf_exempt  # Add csrf_exempt decorator to your view
+@csrf_exempt
 def daraja_view(request):
     if request.method == 'POST':
         # Retrieve form data
@@ -85,7 +87,6 @@ def daraja_view(request):
         amount = request.POST.get('amount_paid')
         phone_number = request.POST.get('phoneNo')
 
-        # Assuming mpesa_payment returns a dictionary with a 'success' key indicating success or failure
         response = mpesa_payment(amount, phone_number)
 
         if response.get('ResponseCode') == '0':
@@ -103,23 +104,6 @@ def daraja_view(request):
 
     return render(request, 'daraja.html')
 
-
-
-@login_required  # Add login_required decorator to ensure only logged-in users can access this view
-def home_view(request):
-    # Retrieve the currently logged-in user
-    user = request.user
-
-    return render(request, 'home.html', {'user': user})
-def book_vehicle(request):
-    if request.method == 'POST':
-        form = MemberForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('booking_receipt'))
-    else:
-        form = MemberForm()
-    return render(request, 'book_vehicle.html', {'form': form})
 
 def booking_receipt(request):
     user = request.user
@@ -142,12 +126,10 @@ def callback_view(request):
         # Get the raw request body
         stk_callback_response = request.body.decode('utf-8')
 
-        # Log the response to a file (optional)
         log_file = "Mpesastkresponse.json"
         with open(log_file, "a") as log:
             log.write(stk_callback_response)
 
-        # Parse the JSON data
         data = json.loads(stk_callback_response)
 
         # Extract relevant information

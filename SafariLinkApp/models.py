@@ -68,9 +68,9 @@ class BusesAvailable(models.Model):
         return self.BusName
 
 class Notifications(models.Model):
-    BusName = models.CharField(max_length=100)
+    BusName = models.CharField(max_length=100,null=True, blank=True)
     From = models.CharField(max_length=100, null=True, blank=True)
-    BusDestination = models.CharField(max_length=100,null=True)
+    BusDestination = models.CharField(max_length=100,null=True,blank=True)
     message = models.CharField(max_length=100, null=True, blank=True)
     generalNotification = models.CharField(max_length=100, null=True, blank=True)
 class MpesaTransaction(models.Model):
