@@ -18,6 +18,12 @@
             <li><a href="#">About us</a></li>
             <li><a href="{% url 'home' %}">My Account</a></li>
             <li><a href="{{ 'admin/' }}">Admin</a></li>
+            <li><div class="Register">
+        <div class="registerLink">
+        <a href="{% url 'register' %}" style="color: #ff512f">Register</a>
+        <a href="{% url 'login' %}" style="color: #ff512f">Login</a>
+        </div>
+    </div> </li>
         </ul>
                 <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
     </nav>
@@ -32,12 +38,7 @@
             Whether it's your daily commute or an exciting travel adventure, we've got you covered.</p>
                 <button><a href="{% url 'dashboard' %}">book now</a></button>
     </div>
-    <div class="Register">
-        <div class="registerLink">
-        <a href="{% url 'register' %}">Register</a>
-        <a href="{% url 'login' %}">Login</a>
-        </div>
-    </div>
+
 </section>
 <script src="{% static 'javascript.js' %}"></script>
 <div class="footers">

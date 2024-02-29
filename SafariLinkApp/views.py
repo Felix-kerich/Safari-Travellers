@@ -1,6 +1,7 @@
 import json
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render
@@ -96,9 +97,12 @@ def daraja_view(request):
             user.amount_paid = amount
             user.save()
 
-            return JsonResponse(response)
-            # Redirect to booking receipt page
-            # return redirect('callback')
+            # return JsonResponse(response)
+
+            messages.success(request, f"{ username } your payment is being verified")
+            # return render(request, 'home.html')
+            # return HttpResponseRedirect(login_view)
+            return HttpResponseRedirect(reverse('home'))
         else:
             return JsonResponse(response)
 

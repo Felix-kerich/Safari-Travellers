@@ -64,6 +64,9 @@ class BusesAvailable(models.Model):
         current_time = timezone.now()
         time_until_arrival = self.BusArrivalTime - current_time
         return time_until_arrival
+
+    def is_booking_enabled(self):
+        return self.BusArrivalTime > timezone.now()
     def __str__(self):
         return self.BusName
 

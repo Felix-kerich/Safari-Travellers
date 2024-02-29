@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <style>
@@ -21,21 +21,11 @@
             text-align: center;
             border-radius: 20px;
             margin-left: 100px;
+            line-height: 10px;
         }
         .pay{
             margin-left: 90%;
             margin-top: 100px;
-
-        }
-        .countdown{
-            margin-left: 600px;
-            margin-top: -100px;
-
-
-        }
-        .e-citizen{
-           margin-left: 1500px;
-            margin-top: -200px;
 
         }
         .map{
@@ -43,35 +33,58 @@
             margin-top: -600px;
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
     <title>Receipt Details</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
 </head>
 
 <body style="background-color: #79aec8">
-<header>
-    <nav class="navbar">
-            <ul class="menu-links">
-            <span id="close-menu-btn" class="material-symbols-outlined">close</span>
-            <li><a href="{{ '/' }}">Home</a></li>
-            <li><a href="#">Location</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'notifications' %}">Notifications</a></li>
-            {% else %}
-               <li><a href="{% url 'login' %}">Notification</a></li>
-            {% endif %}
-            <li><a href="{% url 'contact' %}">Contact us</a></li>
-            <li><a href="{% url 'dashboard' %}">Vehicles available</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-            {% endif %}
+<nav class="navbar bg-body-tertiary fixed-top" style="height: 100px;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Safirilink Travellers</a>
+      <form id="searchForm" class="d-flex mt-3" role="search" style="margin-left: 800px">
+    <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success" type="button" onclick="performSearch()">Search</button>
+  </form>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <span id="close-menu-btn" class="material-symbols-outlined">close</span>
+          <li><a class="nav-link active" aria-current="page" href="{{ '/' }}">Home</a></li>
+          <li><a class="nav-link" href="#">Location</a></li>
+          {% if user.is_authenticated %}
+              <li><a class="nav-link" href="{% url 'notifications' %}">Notifications</a></li>
+          {% else %}
+              <li><a class="nav-link" href="{% url 'login' %}">Notification</a></li>
+          {% endif %}
+          <li><a class="nav-link" href="{% url 'contact' %}">Contact us</a></li>
+          <li><a class="nav-link" href="{% url 'dashboard' %}">Vehicles available</a></li>
+          {% if user.is_authenticated %}
+              <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          {% endif %}
         </ul>
         <span id="hamburger-btn" class="material-symbols-outlined" style="color: black;">menu</span>
-    </nav>
-</header>
-<table>
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+<table border="1" class="table table-striped-columns" style="margin-top: 150px; width: 1000px">
     <h1>{{ response_data }}</h1>
     <tr>
         <th>Bus Number Plate</th>
@@ -85,22 +98,29 @@
             <td style="color: red">{{ bus.time_until_arrival }}</td>
             <td>{{ bus.Amount }}</td>
             <td>{{ bus.NuberOfSeats }}</td>
-            <td><a href="{% url 'book' %}">book</a> </td>
+            <td>
+                   {% if bus.is_booking_enabled %}
+                          <a href="{% url 'book' %}">Book Now</a>
+                   {% else %}
+                      Booking Disabled
+                  {% endif %}
+                </td>
         </tr>
     {% endfor %}
 </table>
 <br><br>
-<div class="countdown">
-        <div>
-<video width="700" height="400" controls autoplay muted loop>
-    <source src="{% static 'bus.mp4' %}" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-</div>
-</div>
-<div class="e-citizen">
-    <h2><a href="{% url 'e_citizen' %}">Click Here </a>to pay via E-Citizen and get 10% discount</h2>
-</div>
+
+{#<div class="countdown">#}
+{#        <div>#}
+{#<video width="700" height="400" controls autoplay muted loop>#}
+{#    <source src="{% static 'bus.mp4' %}" type="video/mp4">#}
+{#    Your browser does not support the video tag.#}
+{#</video>#}
+{#</div>#}
+
+{#<div class="e-citizen">#}
+{#    <h2><a href="{% url 'e_citizen' %}">Click Here </a>to pay via E-Citizen and get 10% discount</h2>#}
+{#</div>#}
  <button class="pay" style="width: 100px; height: 50px; border-radius: 20px; background-color: olivedrab">
 
            <a href="{% url 'book' %}">Pay here</a>
@@ -149,6 +169,30 @@
         {% endif %}
         {% if user.is_authenticated and bus.From == "nakuru" and bus.BusDestination == "kisumu"  %}
             <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510694.477130987!2d35.08918452802659!3d-0.17075192371863102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!4m5!1s0x182aa437ad4ac81d%3A0x2012a439d6248dd2!2sKisumu!3m2!1d-0.0917016!2d34.7679568!5e0!3m2!1sen!2ske!4v1707814312703!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nakuru" and bus.BusDestination == "nyeri"  %}
+             <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1021387.4514384805!2d35.85824221980898!3d-0.19701910015506316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!4m5!1s0x18285dfed09e0ebf%3A0x829716f702f65e9e!2sNyeri!3m2!1d-0.43709899999999996!2d36.9580104!5e0!3m2!1sen!2ske!4v1709231860628!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nyeri" and bus.BusDestination == "nairobi"  %}
+             <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d510638.96140695806!2d36.71635711135776!3d-0.8619110859616239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18285dfed09e0ebf%3A0x829716f702f65e9e!2sNyeri!3m2!1d-0.43709899999999996!2d36.9580104!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!5e0!3m2!1sen!2ske!4v1709231921777!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "kisumu" and bus.BusDestination == "nairobi"  %}
+              <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2042639.6907313445!2d34.47548824323001!3d-0.6880409315325909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182aa437ad4ac81d%3A0x2012a439d6248dd2!2sKisumu!3m2!1d-0.0917016!2d34.7679568!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!5e0!3m2!1sen!2ske!4v1709233515726!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "kisumu" and bus.BusDestination == "nakuru"  %}
+               <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2042775.341450718!2d34.10452803100533!3d-0.19340870345609348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182aa437ad4ac81d%3A0x2012a439d6248dd2!2sKisumu!3m2!1d-0.0917016!2d34.7679568!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!5e0!3m2!1sen!2ske!4v1709233547455!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nairobi" and bus.BusDestination == "kisumu"  %}
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d2042637.9345305953!2d34.473251844682906!3d-0.6921307471243251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!4m5!1s0x182aa437ad4ac81d%3A0x2012a439d6248dd2!2sKisumu!3m2!1d-0.0917016!2d34.7679568!5e0!3m2!1sen!2ske!4v1709233593215!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nairobi" and bus.BusDestination == "nakuru"  %}
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1021297.0349934571!2d35.78952729939739!3d-0.7874208502027521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!5e0!3m2!1sen!2ske!4v1709233638859!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nairobi" and bus.BusDestination == "mombasa"  %}
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d4081562.952273978!2d35.602835338295186!3d-2.539062432968973!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi!3m2!1d-1.2920658999999999!2d36.8219462!4m5!1s0x184012e78ec02c7d%3A0xcb618bbc35d0db5a!2sMombasa!3m2!1d-4.0434771!2d39.6682065!5e0!3m2!1sen!2ske!4v1709233709450!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        {% endif %}
+        {% if user.is_authenticated and bus.From == "nakuru" and bus.BusDestination == "Eldoret"  %}
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1021391.755802965!2d35.01527651840037!3d0.10558235656064181!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x18298d90cf610bef%3A0xf2f21833bc7cc21a!2sNakuru!3m2!1d-0.3030988!2d36.080026!4m5!1s0x178101ae37f9f535%3A0xe2db337df0fc0820!2sEldoret!3m2!1d0.5142774999999999!2d35.2697802!5e0!3m2!1sen!2ske!4v1709233759419!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         {% endif %}
 
     {% endfor %}
