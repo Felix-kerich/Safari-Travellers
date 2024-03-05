@@ -8,8 +8,8 @@ from requests.auth import HTTPBasicAuth
 
 def mpesa_payment(amount, phone_number):
     # Safaricom Developer Portal Credentials
-    consumer_key = 'IWw4FAjmtDGWWwUzFWSLIPUtLyZhsYxmPC8TdbvZC2QAGraY'
-    consumer_secret = 'YJw6GASORyg5ytGo3FAUQUiGlLV458Z23kGBNA2tOrdXjXZ0wuVcJGXdVn23A7Bq'
+    consumer_key = '9f3n39QeeRxMQn7QwXnV3Ic57wFCuJAA9qJ99iBoJ3QVQvZE'
+    consumer_secret = '3bz3dsBibxRHkdyIWL2PInqj6mQx9C2l7ps0gh9HYDXaRnpHP3l7m0BM74mA0syt'
 
     # M-Pesa Shortcode and Passkey
     shortcode = '174379'
@@ -45,7 +45,7 @@ def mpesa_payment(amount, phone_number):
         "PartyA": international_phone_number,
         "PartyB": shortcode,
         "PhoneNumber": international_phone_number,
-        "CallBackURL": "https://389e-102-215-32-244.ngrok-free.app/callback/",
+        "CallBackURL": "https://d9be-102-215-32-244.ngrok-free.app/callback/",
         "AccountReference": "SafariLink Travellers",
         "TransactionDesc": "Payment of X"
     }

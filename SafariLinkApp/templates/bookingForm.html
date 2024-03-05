@@ -6,6 +6,8 @@
     <title>Book</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" href="{% static 'styles/payments.css' %}">
+               <link rel="icon" href="{% static 'Images/bus.jpg' %}" type="image/png">
+
 </head>
 
 <body>
@@ -27,6 +29,8 @@
                     <option value="{{ car.BusName }}">{{ car.BusName }}</option>
                 {% endfor %}
             </select><br>
+            <label for="quantity">Enter the number of seats you want to book</label>
+            <input type="number" name="quantity" id="quantity"> <br>
 
             <label for="amount">Enter Amount</label><br>
             <input type="text" name="amount_paid" id="amount"><br>

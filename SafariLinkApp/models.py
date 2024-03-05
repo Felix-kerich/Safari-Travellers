@@ -24,6 +24,7 @@ class Member(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=50)
     seatNumber = models.CharField(max_length=100,null=True, blank=True)
     vehicle = models.CharField(max_length=100,null=True, blank=True)
+    quantity = models.IntegerField(null=True,blank=True)
     is_paid =  models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

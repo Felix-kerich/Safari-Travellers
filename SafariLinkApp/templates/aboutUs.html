@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SafariLink Travelers</title>
+    <link rel="stylesheet" href="styles.css">
+               <link rel="icon" href="{% static 'Images/bus.jpg' %}" type="image/png">
+
+</head>
+<body>
+    <header>
+        <h1>About SafariLink Travelers</h1>
+
+    </header>
+    <section class="background">
+        <h2>Background</h2>
+        <p>Transportation within Kenya, a nation marked by diverse landscapes and vibrant urban centers, has witnessed a transformative shift with the advent of technology. The Travel Management System (TMS) emerges as a crucial player in this evolution, aiming to redefine the experience of booking and managing vehicle travel for passengers across the country.</p>
+        <!-- Other background content goes here -->
+    </section>
+    <section class="purpose">
+        <h2>Purpose</h2>
+        <p>The purpose of the Travel Management System is to offer a convenient and secure platform for passengers to book and pay for travel services. Additionally, the system includes features such as real-time route optimization, accident alerts, and accurate arrival time estimations.</p>
+        <!-- Other purpose content goes here -->
+    </section>
+    <section class="problem">
+        <h2>Problem Statement</h2>
+        <p>The travel industry faces challenges related to optimizing routes, addressing real-time traffic disruptions, and providing a secure and efficient booking process. Traditional methods often lack the integration of technological advancements, leading to inconveniences for both passengers and drivers. Additionally, ensuring passenger safety in unforeseen circumstances, such as accidents or traffic jams, is a critical concern that requires a systematic solution.</p>
+        <!-- Other problem statement content goes here -->
+    </section>
+<div class="video">
+        <video width="700" height="400" controls autoplay muted loop>
+    <source src="{% static 'bus.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+</div>
+    <footer>
+        <p>&copy; 2024 SafariLink Travelers. All rights reserved.</p>
+    </footer>
+</body>
+</html>

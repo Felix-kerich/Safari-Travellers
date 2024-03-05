@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -52,10 +52,19 @@ def login_view(request):
                 buses = BusesAvailable.objects.all()
                 # user =Member.objects.latest('username')
                 user = request.user  # Retrieve the currently logged-in user
+                # Fetch the booked vehicle for the user
+                user_vehicle = user.vehicle if hasattr(user, 'vehicle') else None
+
+                # Fetch buses only if the user has a booked vehicle
+                if user_vehicle:
+                    # Filter buses based on the user's booked vehicle
+                    buses = BusesAvailable.objects.filter(BusName=user_vehicle)
+                else:
+                    buses = None
                 print("User:", user)
                 print(f"Successfully logged in as {username}")  # Add debug print
                 messages.success(request, f"Successfully logged in as {username}")
-                return render(request, 'home.html', {'buses': buses, 'user': user})
+                return render(request, 'home.html', {'buses': buses, 'user': user,'user_vehicle': user_vehicle})
                 # return HttpResponseRedirect(reverse('home'))
             else:
                 print("Invalid username or password")
@@ -73,8 +82,17 @@ def login_view(request):
 def home_view(request):
     # Retrieve the currently logged-in user
     user = request.user
+    # Fetch the booked vehicle for the user
+    user_vehicle = user.vehicle if hasattr(user, 'vehicle') else None
 
-    return render(request, 'home.html', {'user': user})
+    # Fetch buses only if the user has a booked vehicle
+    if user_vehicle:
+        # Filter buses based on the user's booked vehicle
+        buses = BusesAvailable.objects.filter(BusName=user_vehicle)
+    else:
+        buses = None
+
+    return render(request, 'home.html', {'user': user, 'user_vehicle': user_vehicle, 'buses': buses})
 def book_view(request):
         all_buses = BusesAvailable.objects.all()
         return render(request, 'bookingForm.html', {'all_buses': all_buses})
@@ -86,7 +104,14 @@ def daraja_view(request):
         username = request.POST.get('username')
         vehicle = request.POST.get('vehicle')
         amount = request.POST.get('amount_paid')
+        quantity = request.POST.get('quantity')
         phone_number = request.POST.get('phoneNo')
+
+        user = get_object_or_404(Member, username=username)
+        if not user.is_authenticated or not Member.objects.filter(username=user.username).exists():
+            messages.error(request, "Username does not exist.")
+            return HttpResponseRedirect(reverse('home'))
+
 
         response = mpesa_payment(amount, phone_number)
 
@@ -95,6 +120,7 @@ def daraja_view(request):
             user = Member.objects.get(username=username)
             user.vehicle = vehicle
             user.amount_paid = amount
+            user.quantity = quantity
             user.save()
 
             # return JsonResponse(response)
@@ -106,11 +132,15 @@ def daraja_view(request):
         else:
             return JsonResponse(response)
 
-    return render(request, 'daraja.html')
+    return render(request, 'bookingForm.html')
 
 
 def booking_receipt(request):
     user = request.user
+    # Check if the user exists, redirect to home if not
+    if not user.is_authenticated or not Member.objects.filter(username=user.username).exists():
+        messages.error(request, "Username does not exist.")
+        return HttpResponseRedirect(reverse('home'))
 
     return render(request, 'home.html', {'user': user})
 def logout_view(request):
@@ -163,3 +193,6 @@ def callback_view(request):
             return JsonResponse({'message': 'Transaction successful'})
 
     return JsonResponse({'error': 'Method not allowed'})
+
+def AboutUs_view(request):
+    return render(request,'aboutUs.html')
